@@ -53,8 +53,24 @@ const removeCommentForAdmin = async (req,res,next)=> {
 
 const removeCommentForUser =async(req,res,next)=> {
     const {commentId} = req.body
+    const {userId} = req
+    
     try { 
         await main();
+        const existingCommit = await Comment.findById(userId);
+        if(!existingCommit) {
+            return res.json({
+                success:false,
+                message:"commit not found"
+            })
+        }
+        if(commentId!==existingCommit.userId) {
+            return res.json({
+                success:false,
+                message:"forbidden"
+            })
+        }
+
         await Comment.findByIdAndDelete(commentId)
         res.json({
             success:true,
@@ -69,7 +85,13 @@ const removeCommentForUser =async(req,res,next)=> {
 
 }
 const updateComment = async(req,res,next)=> {
-    const {commentId,approved} = req.body
+    const {commentId,approved=false} = req.body;
+    if(!commentId) {
+        return res.json({
+            success:false,
+            message:"missing details"
+        })
+    }
     try {
         await main()
         const newComment = await Comment.findByIdAndUpdate(commentId,{isApproved:approved})
@@ -88,7 +110,6 @@ const updateComment = async(req,res,next)=> {
 
 const getBlogComments = async(req,res,next) => {
     const {blogId} = req.body
-    console.log(blogId)
     try {
         await main();
         const comments = await Comment.find({blogId}).populate("userId")

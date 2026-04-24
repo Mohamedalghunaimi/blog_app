@@ -5,7 +5,7 @@ const { main } = require("../models/user");
 const addBlog = async(req,res,next) => {
     const image= req.file;
     const {title,subTitle,category,description,isPublished} = req.body;
-    if(!title || !subTitle || !category || !description) {
+    if(!title || !subTitle || !category || !description || !image) {
         return {
             success:false,
             message:"missing details"

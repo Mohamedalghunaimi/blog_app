@@ -38,9 +38,10 @@ const register = async(req,res,next)=> {
         })
 
     } catch (error) {
+        console.error(error)
         res.json({
             success:false,
-            message:error.message
+            message:'something went wrong in the server'
         })
         
     }
@@ -74,9 +75,8 @@ const login = async(req,res,next)=> {
     } catch (error) {
         res.json({
             success:false,
-            message:error.message
+            message:'something went wrong in the server'
         })
-        
     }
 }
 const protectRoute = async(req,res,next) => {
@@ -92,9 +92,10 @@ const protectRoute = async(req,res,next) => {
         req.userId = decoded.userId
         next()
     } catch (error) {
+        console.error(error)
         res.json({
             success:false,
-            message:error.message
+            message:'something went wrong in the server'
         })
         
     }

@@ -3,7 +3,6 @@ const {main2} = require("../middlewares/gemini")
 require("dotenv").config()
 const loginAsAdmin = async(req,res,next)=> {
     const {email,password} = req.body
-    console.log({email,password})
     try {
         if((!email)||(!password)) {
             return res.json({
